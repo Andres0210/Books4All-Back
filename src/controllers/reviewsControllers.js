@@ -46,7 +46,7 @@ const createReview = async (body, rating, book_id, user_name) => {
     await book.addReviews(newReview);
     const user_name_test = newReview.user_name;
     const user = await getDetailUser(user_name_test);
-
+    //validamos que el usuario tenga un mail
     if (!email) email = "not specified";
     if (user.email !== "not specified" || !user.email) {
       notificationSuccessReview(user, newReview, book);

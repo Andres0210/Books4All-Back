@@ -61,6 +61,7 @@ const getDetailUser = async (name) => {
 
 const createUser = async (nickname, picture, email) => {
   if (!email) email = "not specified";
+  //validamos que no exista el usuario en la base de datos y que tenga un mail
   if (!(await getDetailUser(nickname)) && email !== "not specified") {
     notificationNewUser(email, nickname);
   }
