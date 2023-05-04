@@ -9,19 +9,19 @@ const getAllUsers = async () => {
         model: Role,
         attributes: ["name"],
         through: {
-          attributes: []
-        }
+          attributes: [],
+        },
       },
       {
         model: Bought,
-        attributes: ["id", "books", "userId",  "createdAt"]
+        attributes: ["id", "books", "userId", "createdAt"],
       },
       {
         model: Reviews,
-        attributes: ["book_id", "body", "rating"]
-      }
-    ]
-  })
+        attributes: ["book_id", "body", "rating"],
+      },
+    ],
+  });
 
   return users;
 };
@@ -41,7 +41,7 @@ const getDetailUser = async (name) => {
       },
       {
         model: Bought,
-        attributes: ["id", "books", "userId",  "createdAt"]
+        attributes: ["id", "books", "userId", "createdAt"],
       },
       {
         model: Reviews,
@@ -60,10 +60,8 @@ const getDetailUser = async (name) => {
 };
 
 const createUser = async (nickname, picture, email) => {
-
   if (!email) email = "not specified";
-
-  if (!(await getDetailUser(nickname))) {
+  if (!(await getDetailUser(nickname)) && email !== "not specified") {
     notificationNewUser(email, nickname);
   }
 
@@ -114,7 +112,6 @@ const addAdminRole = async (name) => {
 
 const updateProfile = async (name, picture, email, alterName, about) => {
   const user = await User.findOne({
-
     where: { name: name },
   });
 
@@ -122,7 +119,6 @@ const updateProfile = async (name, picture, email, alterName, about) => {
   if (picture) user.picture = picture;
   if (email) user.email = email;
   if (about) user.about = about;
-
 
   user.save();
 
@@ -136,7 +132,6 @@ const updateUserState = async (name) => {
       model: Role,
       attributes: ["name"],
       through: {
-
         attributes: [],
       },
     },
@@ -147,7 +142,6 @@ const updateUserState = async (name) => {
   user.active = !user.active;
 
   user.save();
-
 
   return {
     message: `The user ${name} has changed their state active to ${user.active}`,

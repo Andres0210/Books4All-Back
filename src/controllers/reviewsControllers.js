@@ -46,10 +46,12 @@ const createReview = async (body, rating, book_id, user_name) => {
     await book.addReviews(newReview);
     const user_name_test = newReview.user_name;
     const user = await getDetailUser(user_name_test);
+
+    if (!email) email = "not specified";
     if (user.email !== "not specified" || !user.email) {
       notificationSuccessReview(user, newReview, book);
     }
-    await user.addReviews(newReview)
+    await user.addReviews(newReview);
 
     return newReview;
   } catch (error) {
@@ -58,13 +60,17 @@ const createReview = async (body, rating, book_id, user_name) => {
 };
 
 const deleteReview = async (id) => {
-  const review = await Reviews.findByPk(id)
+  const review = await Reviews.findByPk(id);
   if (!review) {
-    throw new Error('This review does not exist');
+    throw new Error("This review does not exist");
   }
-  review.active = !review.active
-  await review.save({ fields: ['active']})
-  return {message: `This review is now ${review.active === true ? 'active' : 'disabled'}`}
-}
+  review.active = !review.active;
+  await review.save({ fields: ["active"] });
+  return {
+    message: `This review is now ${
+      review.active === true ? "active" : "disabled"
+    }`,
+  };
+};
 
 module.exports = { createReview, getAllReviews, getReviewDetail, deleteReview };
